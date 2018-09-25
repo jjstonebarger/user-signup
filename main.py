@@ -10,16 +10,13 @@ app = Flask(__name__)
 
 app.config['DEBUG'] = True 
 
-
 @app.route('/')
 def display_signup_form():
     template = jinja_env.get_template('index.html')
     return template.render()
 
-
 @app.route('/', methods=['POST'])
-def validate_signup():
-    
+def validate_signup():  
     username = request.form['username']
     password = request.form['password']
     passverify = request.form['passverify']
@@ -30,7 +27,7 @@ def validate_signup():
     passverify_error=''
     email_error=''
     
-    #name validation
+    #valdiate username
     if len(username) < 3:
         if username =='':
             username_error='Please enter a username.'
@@ -42,7 +39,7 @@ def validate_signup():
     if len(username) > 20:
             username_error='User name must be less than 20 characters.'  
 
-    #pass validation
+    #validate password
     if len(password) < 3:
         if password =='':
             password_error='Please enter a password.'
@@ -54,15 +51,7 @@ def validate_signup():
     if len(password) > 20:
             password_error='Password  must be less than 20 characters.'
 
-    #passverify validation
-
-    if passverify != password:
-        passverify_error = "Passwords don't match."
-
-    password=''
-    passverify=''
-
-    #email validation
+    #validate email addy
     chars = '@'
     char2 = '.'
     for char in email:
@@ -77,7 +66,14 @@ def validate_signup():
                 email_error = "This is not a valid email."
             else:
                 if char in email == ' ':
-                    email_error = "This is not a valid email."
+                    email_error = "This is not a valid email."        
+
+    #validate password verify
+    if passverify != password:
+        passverify_error = "Passwords don't match."
+
+    password=''
+    passverify=''
 
     if not username_error and not password_error and not passverify_error and not email_error:
         template = jinja_env.get_template('welcome.html')
@@ -88,7 +84,5 @@ def validate_signup():
         return template.render(username_error=username_error, password_error=password_error, username=username,
             password=password, passverify=passverify, passverify_error=passverify_error, email=email, email_error=email_error) 
          
-
-    
 
 app.run()
