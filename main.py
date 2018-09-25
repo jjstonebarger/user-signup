@@ -8,7 +8,7 @@ jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), a
 
 app = Flask(__name__)
 
-app.config['DEBUG'] = True #displays runtime  errors
+app.config['DEBUG'] = True 
 
 
 @app.route('/')
@@ -22,15 +22,15 @@ def validate_signup():
     
     username = request.form['username']
     password = request.form['password']
-    pwverify = request.form['pwverify']
+    passverify = request.form['passverify']
     email = request.form['email']
 
     username_error=''
     password_error=''
-    pwverify_error=''
+    passverify_error=''
     email_error=''
     
-    #username validation
+    #name validation
     if len(username) < 3:
         if username =='':
             username_error='Please enter a username.'
@@ -42,7 +42,7 @@ def validate_signup():
     if len(username) > 20:
             username_error='User name must be less than 20 characters.'  
 
-    #password validation
+    #pass validation
     if len(password) < 3:
         if password =='':
             password_error='Please enter a password.'
@@ -54,13 +54,13 @@ def validate_signup():
     if len(password) > 20:
             password_error='Password  must be less than 20 characters.'
 
-    #pwverify validation
+    #passverify validation
 
-    if pwverify != password:
-        pwverify_error = "Passwords don't match."
+    if passverify != password:
+        passverify_error = "Passwords don't match."
 
     password=''
-    pwverify=''
+    passverify=''
 
     #email validation
     chars = '@'
@@ -79,14 +79,14 @@ def validate_signup():
                 if char in email == ' ':
                     email_error = "This is not a valid email."
 
-    if not username_error and not password_error and not pwverify_error and not email_error:
+    if not username_error and not password_error and not passverify_error and not email_error:
         template = jinja_env.get_template('welcome.html')
         return template.render(username=username)
         
     else:
         template = jinja_env.get_template('index.html')
         return template.render(username_error=username_error, password_error=password_error, username=username,
-            password=password, pwverify=pwverify, pwverify_error=pwverify_error, email=email, email_error=email_error) 
+            password=password, passverify=passverify, passverify_error=passverify_error, email=email, email_error=email_error) 
          
 
     
